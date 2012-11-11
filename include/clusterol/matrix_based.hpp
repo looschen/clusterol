@@ -19,8 +19,11 @@
 namespace clusterol{
 
   template <typename dis_val, typename tree_t, typename property_map, typename lance_williams>
-  void join(dissimilarity_matrix<dis_val>& dis_mat, tree_t& T, property_map height, lance_williams lw){
+typename boost::graph_traits<tree_t>::vertex_descriptor join(dissimilarity_matrix<dis_val>& dis_mat,
+						tree_t& tree, property_map height,
+						lance_williams lw){
     // find minimum pair and join
+    // returns new vertex representing the joined pair
     using namespace std;
     using namespace boost;
 
@@ -31,9 +34,9 @@ namespace clusterol{
     // size_t second = cluster_map[min_pair.second];
   
     // add to tree
-    vertex parent = add_vertex(T);
-    add_edge(parent, min_pair.first, T);
-    add_edge(parent, min_pair.second, T);
+    vertex parent = add_vertex(tree);
+    add_edge(parent, min_pair.first, tree);
+    add_edge(parent, min_pair.second, tree);
     height[parent] = dis_mat(min_pair.first, min_pair.second);
 
     // update dis_mat(min_pair.first, *)
@@ -46,11 +49,16 @@ namespace clusterol{
 
     dis_mat.erase(min_pair.second);
     dis_mat.move(min_pair.first, parent);
+
+    return parent;
   }
 
 
   template <typename dissimilarity_t, typename random_access_iterator, typename tree_t, typename property_map, typename lance_williams>
-  void matrix_clustering(random_access_iterator data, random_access_iterator data_end, tree_t& T, property_map height, dissimilarity_t dissimilarity, lance_williams lw){
+  void matrix_clustering(random_access_iterator data, random_access_iterator data_end,
+			 tree_t& tree, typename boost::graph_traits<tree_t>::vertex_descriptor& root,
+			 property_map height,
+			 dissimilarity_t dissimilarity, lance_williams lw){
     // Note:
     // keep order of arguments consistent with possible future algos
     
@@ -61,7 +69,7 @@ namespace clusterol{
     //  std::vector<size_t> cluster_map(n_data_point);
   
     // init tree
-    T = tree_t(n_data_point);
+    tree = tree_t(n_data_point);
     for(size_t i = 0; i != n_data_point; ++i){
       height[i] = 0;
       // cluster_map[i] = i;
@@ -77,7 +85,7 @@ namespace clusterol{
       // std::cout << "min_pair: (" << min_pair.first << ", " << min_pair.second << ") = " << dis_mat(min_pair.first, min_pair.second) << "\n";
       // std::cout << dis_mat << "\n";
     
-      join(dis_mat, T, height, lw);
+      root = join(dis_mat, tree, height, lw);
     }
   }
 
@@ -89,7 +97,7 @@ namespace clusterol{
   // template <typename dis_val, typename lance_williams_n,
   // 	    typename tree_t, typename property_map_h, typename property_map_n>
   // void join(dissimilarity_matrix<dis_val>& dis_mat,
-  // 	    tree_t& T, property_map_h height, property_map_n n_member,
+  // 	    tree_t& tree, property_map_h height, property_map_n n_member,
   // 	    lance_williams_n lw){
   
   //   // find minimum pair and join
@@ -103,9 +111,9 @@ namespace clusterol{
   //   // size_t second = cluster_map[min_pair.second];
 
   //   // add to tree
-  //   vertex parent = add_vertex(T);
-  //   add_edge(parent, min_pair.first, T);
-  //   add_edge(parent, min_pair.second, T);
+  //   vertex parent = add_vertex(tree);
+  //   add_edge(parent, min_pair.first, tree);
+  //   add_edge(parent, min_pair.second, tree);
   //   height[parent] = dis_mat(min_pair.first, min_pair.second);
   //   n_member[parent] = n_member[min_pair.first] + n_member[min_pair.second];
   //   // cluster_map[min_pair.first] = parent;
@@ -129,7 +137,7 @@ namespace clusterol{
   // 	    typename random_access_iterator,
   // 	    typename tree_t, typename property_map_h, typename property_map_n>
   // void matrix_clustering(random_access_iterator data, random_access_iterator data_end,
-  // 			 tree_t& T, property_map_h height, property_map_n n_member,
+  // 			 tree_t& tree, property_map_h height, property_map_n n_member,
   // 			 lance_williams_n lwn, dissimilarity_t dissimilarity){
 
   
@@ -140,7 +148,7 @@ namespace clusterol{
   //   //  std::vector<size_t> cluster_map(n_data_point);
 
   //   // init tree
-  //   T = tree_t(n_data_point);
+  //   tree = tree_t(n_data_point);
   //   for(size_t i = 0; i != n_data_point; ++i){
   //     n_member[i] = 1;
   //     height[i] = 0;
@@ -161,7 +169,7 @@ namespace clusterol{
   //     // std::cout << dis_mat << "\n";
     
     
-  //     join(dis_mat, T, height, n_member, lwn);
+  //     join(dis_mat, tree, height, n_member, lwn);
   //   }
   // }
 
