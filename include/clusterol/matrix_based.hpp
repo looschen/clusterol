@@ -18,7 +18,7 @@
 
 namespace clusterol{
 
-  template <typename dis_val, typename tree_t, typename property_map>
+  template <typename dis_val, typename tree_t, typename property_map, typename lance_williams>
   void join(dissimilarity_matrix<dis_val>& dis_mat, tree_t& T, property_map height, lance_williams lw){
     // find minimum pair and join
     using namespace std;
@@ -49,7 +49,7 @@ namespace clusterol{
   }
 
 
-  template <typename dissimilarity_t, typename random_access_iterator, typename tree_t, typename property_map>
+  template <typename dissimilarity_t, typename random_access_iterator, typename tree_t, typename property_map, typename lance_williams>
   void matrix_clustering(random_access_iterator data, random_access_iterator data_end, tree_t& T, property_map height, dissimilarity_t dissimilarity, lance_williams lw){
     // Note:
     // keep order of arguments consistent with possible future algos

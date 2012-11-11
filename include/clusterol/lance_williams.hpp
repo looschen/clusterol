@@ -22,7 +22,7 @@
 
 namespace clusterol{
   
-  struct lance_williams{
+  struct lance_williams_generic{
     lance_williams_generic(double _alpha_i, double _alpha_j, double _beta, double _gamma)
       : alpha_i(_alpha_i),
 	alpha_j(_alpha_j),
