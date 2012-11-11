@@ -41,7 +41,7 @@ namespace clusterol{
   };
 
 
-  struct euclidian_distance{
+  struct euclidean_distance{
     template <typename input_iterator>
     double operator()(input_iterator a_begin, input_iterator a_end, input_iterator b_begin){
       double result = 0;
@@ -58,7 +58,7 @@ namespace clusterol{
   /********************************************************************************/
   // more and advanced dissimilarities currently unsupported
   
-  // struct squared_euclidian_distance{
+  // struct squared_euclidean_distance{
   //   template <typename input_iterator>
   //   double operator()(input_iterator a_begin, input_iterator a_end, input_iterator b_begin){
   //     double result = 0;
