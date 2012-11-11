@@ -1,1 +1,13 @@
+
+* Overview
 This project will make existing clustering algorithms available to the public.
+Currently clusterol-tool seems to be able to single-link cluster.
+
+* Todo
+- make clusterol-tool more useful
+- actually test it
+- make headers more usable and add functionality back in
+- documentation
+
+
+
