@@ -50,8 +50,10 @@ namespace clusterol{
 
 
   template <typename dissimilarity_t, typename random_access_iterator, typename tree_t, typename property_map>
-  void matrix_clustering(random_access_iterator data, random_access_iterator data_end, tree_t& T, property_map height, lance_williams lw, dissimilarity_t dissimilarity){
-
+  void matrix_clustering(random_access_iterator data, random_access_iterator data_end, tree_t& T, property_map height, dissimilarity_t dissimilarity, lance_williams lw){
+    // Note:
+    // keep order of arguments consistent with possible future algos
+    
     // use value type of height map for the dissimilarity matrix
     typedef typename  boost::property_traits<property_map>::value_type dis_val;
   
