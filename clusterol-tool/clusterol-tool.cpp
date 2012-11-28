@@ -18,7 +18,7 @@
 
 int main(int argc, char *argv[]){
 
-  std::string data_point_filename, label_filename, clustering_method, graph_type;
+  std::string data_point_filename, label_filename, clustering_method, graph_type, graph_filename, join_filename;
     
   namespace po = boost::program_options;
   po::options_description desc("Hierarchical Clustering with clusterol");
@@ -30,6 +30,8 @@ int main(int argc, char *argv[]){
       // ("label-file,l", po::value(&label_filename), "file containing labels")
       ("method,m", po::value(&clustering_method)->default_value("single"), "available methods are \"single\"") // and many more
       ("graph-type", po::value(&graph_type)->default_value("graphviz"), "available types are \"graphviz\"") // and \"graphml\"
+      ("graph-file", po::value(&graph_filename), "write graph in specified format to this file")
+      ("join-file", po::value(&join_filename)->default_value("-"), "put information about mergers/joins here")
     ;
 
   po::variables_map vm;
@@ -64,8 +66,8 @@ int main(int argc, char *argv[]){
 
 
   try{
-    read_file(data_point_filename, line);
-    lines_to_data_points(line, data_set);
+    line = read_file(data_point_filename);
+    data_set = lines_to_data_points(line);
   }catch(std::exception& e){
     std::cerr << "An Error occured during Input: \n"
 	      << e.what() << "\n";
