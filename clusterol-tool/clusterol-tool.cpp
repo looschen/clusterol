@@ -10,6 +10,7 @@
 #include <boost/property_map.hpp>
 #endif
 
+#include "clusterol/join_report.hpp"
 #include "clusterol/dissimilarity.hpp"
 #include "clusterol/lance_williams.hpp"
 #include "clusterol/matrix_based.hpp"
@@ -57,6 +58,19 @@ int main(int argc, char *argv[]){
     exit(1);
   }
 
+
+  // open output files
+  std::ofstream graph_out, join_out;
+  try{
+    if(!graph_filename.empty())
+      open_outfile(graph_filename, graph_out);
+    if(!join_filename.empty())		// always open, suppress with ""
+      open_outfile(join_filename, join_out);
+  }catch(std::exception& e){
+    std::cerr << "An Error occured during output: \n"
+	      << e.what() << "\n";
+    exit(1);
+  }
   
   // Input
   // support only one data_point-type
@@ -64,12 +78,11 @@ int main(int argc, char *argv[]){
   std::vector<std::string> line;
   std::vector<data_point> data_set;
 
-
   try{
     line = read_file(data_point_filename);
     data_set = lines_to_data_points(line);
   }catch(std::exception& e){
-    std::cerr << "An Error occured during Input: \n"
+    std::cerr << "An Error occured during input: \n"
 	      << e.what() << "\n";
     exit(1);
   }
@@ -89,7 +102,8 @@ int main(int argc, char *argv[]){
   // lance_williams lw(0.5, 0.5, -0.25, 0);// Median (weighted centroid
 
   boost::adjacency_list<> dendrogram;
-  boost::graph_traits< boost::adjacency_list<> >::vertex_descriptor root;
+  typedef boost::graph_traits< boost::adjacency_list<> >::vertex_descriptor vertex_descriptor;
+  vertex_descriptor root;
   std::vector<double> height(2*data_set.size() - 1);
   clusterol::matrix_clustering
     (data_set.begin(), data_set.end(),
@@ -97,8 +111,21 @@ int main(int argc, char *argv[]){
      clusterol::dissimilarity_be<clusterol::euclidean_distance>(),
      lw);
 
-  boost::write_graphviz(std::cout, dendrogram, boost::make_label_writer(&height[0]));
-  
+  if(vm.count("graph-file"))
+    boost::write_graphviz(graph_out, dendrogram, boost::make_label_writer(&height[0]));
 
+  if(vm.count("join-file")){
+    join_out << "test\n";
+    typedef clusterol::join_report_entry<double, vertex_descriptor> join_report_entry;
+    std::vector<join_report_entry> join_report = clusterol::get_join_report<join_report_entry>(dendrogram, &height[0]);
+    sort(join_report.begin(), join_report.end());
+
+    for(std::vector<join_report_entry>::iterator i = join_report.begin(); i != join_report.end(); ++i)
+      join_out << std::setw(10) << i->pair.first
+	       << std::setw(10) << i->pair.second
+	       << std::setw(10) << i->height
+	       << "\n";
+  }
+  
   return 0;
 }
