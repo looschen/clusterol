@@ -19,7 +19,7 @@
 namespace clusterol{
 
   template <typename dis_val, typename tree_t, typename property_map, typename lance_williams>
-typename boost::graph_traits<tree_t>::vertex_descriptor join(dissimilarity_matrix<dis_val>& dis_mat,
+  typename boost::graph_traits<tree_t>::vertex_descriptor join(dissimilarity_matrix<dis_val>& dis_mat,
 						tree_t& tree, property_map height,
 						lance_williams lw){
     // find minimum pair and join
