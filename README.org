@@ -1,7 +1,9 @@
 
 * Overview
-This project will make existing clustering algorithms available to the public.
-Currently clusterol-tool seems to be able to single-link cluster.
+This project will make existing clustering algorithms available to the
+public. Currently clusterol-tool seems to be able to single-link
+cluster and not much more. Don't use this for anything at all before
+it is in a more complete state.
 
 * Todo
 - make clusterol-tool more useful
