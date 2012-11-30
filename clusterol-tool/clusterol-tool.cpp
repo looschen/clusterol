@@ -121,8 +121,8 @@ int main(int argc, char *argv[]){
     sort(join_report.begin(), join_report.end());
 
     for(std::vector<join_report_entry>::iterator i = join_report.begin(); i != join_report.end(); ++i)
-      join_out << std::setw(10) << i->pair.first
-	       << std::setw(10) << i->pair.second
+      join_out << std::setw(10) << clusterol::vertex_descriptor_to_R(i->pair.first, data_set.size())
+	       << std::setw(10) << clusterol::vertex_descriptor_to_R(i->pair.second, data_set.size())
 	       << std::setw(10) << i->height
 	       << "\n";
   }

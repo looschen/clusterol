@@ -61,10 +61,22 @@ namespace clusterol{
   //   // this is trivial due to operator< in join_report_entry
   //   std::sort(join_report.begin(), join_report.end());
   // }
-  
-  
 
-    
+
+  template <typename vertex_descriptor>
+  int vertex_descriptor_to_R(vertex_descriptor v, size_t n_data_point){
+    // convert a numeric vertex_descriptor to R-style descriptor as in hclust$merge
+    // i.e.:
+    // k<0 denotes a data point / leaf
+    // k>0 denotes a cluster / inner vertex
+    // counting starts at 1.
+
+    v++;
+    if(v <= n_data_point)
+      return -int(v);
+    else
+      return int(v) - n_data_point;
+  }
   
 }
 
