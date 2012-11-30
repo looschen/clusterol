@@ -101,25 +101,31 @@ int main(int argc, char *argv[]){
   // lance_williams lw(0.5, 0.5, 0, 0);	// weighted group average
   // lance_williams lw(0.5, 0.5, -0.25, 0);// Median (weighted centroid
 
-  boost::adjacency_list<> dendrogram;
-  typedef boost::graph_traits< boost::adjacency_list<> >::vertex_descriptor vertex_descriptor;
-  vertex_descriptor root;
-  std::vector<double> height(2*data_set.size() - 1);
-  clusterol::matrix_clustering
-    (data_set.begin(), data_set.end(),
-     dendrogram, root, &height[0],
-     clusterol::dissimilarity_be<clusterol::euclidean_distance>(),
-     lw);
+  // old style:
+  // boost::adjacency_list<> dendrogram;
+  // typedef boost::graph_traits< boost::adjacency_list<> >::vertex_descriptor vertex_descriptor;
+  // vertex_descriptor root;
+  // std::vector<double> height(2*data_set.size() - 1);
+  // clusterol::matrix_clustering
+  //   (data_set.begin(), data_set.end(),
+  //    dendrogram, root, &height[0],
+  //    clusterol::dissimilarity_be<clusterol::euclidean_distance>(),
+  //    lw);
+
+  // new style:
+  clusterol::dendrogram<> dend = clusterol::matrix_cluster<double>(data_set.begin(), data_set.end(),
+						clusterol::dissimilarity_be<clusterol::euclidean_distance>(),
+						lw);
 
   if(vm.count("graph-file"))
-    boost::write_graphviz(graph_out, dendrogram, boost::make_label_writer(&height[0]));
+    boost::write_graphviz(graph_out, dend.tree, boost::make_label_writer(&dend.height[0]));
 
   if(vm.count("join-file")){
-    typedef clusterol::join_report_entry<double, vertex_descriptor> join_report_entry;
-    std::vector<join_report_entry> join_report = clusterol::get_join_report<join_report_entry>(dendrogram, &height[0]);
+    typedef typename clusterol::dendrogram<>::join_report_entry_type join_report_entry_type;
+    std::vector<join_report_entry_type> join_report = clusterol::get_join_report<join_report_entry_type>(dend.tree, &dend.height[0]);
     sort(join_report.begin(), join_report.end());
     
-    for(std::vector<join_report_entry>::iterator i = join_report.begin(); i != join_report.end(); ++i)
+    for(std::vector<join_report_entry_type>::iterator i = join_report.begin(); i != join_report.end(); ++i)
       join_out << clusterol::vertex_descriptor_to_R(i->pair.first, data_set.size())
 	       << " " << clusterol::vertex_descriptor_to_R(i->pair.second, data_set.size())
 	       << " " << std::setprecision(15) << i->height
