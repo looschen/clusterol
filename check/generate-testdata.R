@@ -1,8 +1,8 @@
 #!/usr/bin/env Rscript
 ## generate simple 2d test data
 
-N = 25
-d = 25
+N = 2000
+d = 5
 range.min = -1e6
 range.max = 1e6
 ## df = data.frame(x=runif(N, range.min, range.max), y=runif(N, range.min, range.max))
