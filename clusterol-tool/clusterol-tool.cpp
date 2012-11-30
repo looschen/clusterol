@@ -115,15 +115,14 @@ int main(int argc, char *argv[]){
     boost::write_graphviz(graph_out, dendrogram, boost::make_label_writer(&height[0]));
 
   if(vm.count("join-file")){
-    join_out << "test\n";
     typedef clusterol::join_report_entry<double, vertex_descriptor> join_report_entry;
     std::vector<join_report_entry> join_report = clusterol::get_join_report<join_report_entry>(dendrogram, &height[0]);
     sort(join_report.begin(), join_report.end());
-
+    
     for(std::vector<join_report_entry>::iterator i = join_report.begin(); i != join_report.end(); ++i)
-      join_out << std::setw(10) << clusterol::vertex_descriptor_to_R(i->pair.first, data_set.size())
-	       << std::setw(10) << clusterol::vertex_descriptor_to_R(i->pair.second, data_set.size())
-	       << std::setw(10) << i->height
+      join_out << clusterol::vertex_descriptor_to_R(i->pair.first, data_set.size())
+	       << " " << clusterol::vertex_descriptor_to_R(i->pair.second, data_set.size())
+	       << " " << std::setprecision(15) << i->height
 	       << "\n";
   }
   
