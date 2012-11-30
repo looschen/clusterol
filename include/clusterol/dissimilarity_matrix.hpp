@@ -252,14 +252,24 @@ namespace clusterol{
 
     matrix[a][b] = value;
  
-    // insert with indication of the right position
-    typename set_t::iterator old_pos = it_matrix[a][b];
-    it_matrix[a][b] = mset.insert(old_pos, make_pair(a, b));
-    mset.erase(old_pos);
-
-    // // without indication
-    // mset.erase(it_matrix[a][b]);
-    // it_matrix[a][b] = mset.insert(make_pair(a, b));
+    // // insert with indication of the right position
+    // DON'T DO THIS! in rare cases something goes wrong.
+    // typename set_t::iterator old_pos = it_matrix[a][b];
+    // it_matrix[a][b] = mset.insert(old_pos, make_pair(a, b));
+    // mset.erase(old_pos);
+    // Standard says: (23.1.2)
+    // The insert members shall not affect the validity of iterators
+    // and references to the container, and the erase members shall
+    // invalidate only iterators and references to the erased
+    // elements.
+    // BUT:
+    // matrix[a][b] gets a new value above and is used in comparisons
+    // in the set. Inserting before erasing may result in a wrong
+    // order for the set.
+    
+    // without indication
+    mset.erase(it_matrix[a][b]);
+    it_matrix[a][b] = mset.insert(make_pair(a, b));
   }
 
 

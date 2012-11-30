@@ -9,7 +9,7 @@
 #else
 #include <boost/property_map.hpp>
 #endif
-//#include <iostream>
+#include <iostream>
 
 #include "lance_williams.hpp"
 #include "dissimilarity_matrix.hpp"
@@ -32,9 +32,10 @@ namespace clusterol{
     pair<size_t, size_t> min_pair = dis_mat.min_pair();
     // size_t first = cluster_map[min_pair.first];
     // size_t second = cluster_map[min_pair.second];
-  
+    
     // add to tree
     vertex parent = add_vertex(tree);
+    // std::cout << dis_mat << "\n" << parent << " -> " << min_pair.first << " " << min_pair.second << "\n\n";
     add_edge(parent, min_pair.first, tree);
     add_edge(parent, min_pair.second, tree);
     height[parent] = dis_mat(min_pair.first, min_pair.second);
