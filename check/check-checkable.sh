@@ -30,10 +30,25 @@ $ctool -d $testdir/data -m ward > $testdir/cward
 
 echo "================================================================================"
 
+echo "group-average"
+$ctool -d $testdir/data -m group-average > $testdir/cgroup-average
+./cluster-testdata.R $testdir/data average > $testdir/Rgroup-average
+./compare-results.R $testdir/{c,R}group-average
+
+echo "================================================================================"
+
 echo "weighted-group-average"
 $ctool -d $testdir/data -m weighted-group-average > $testdir/cweighted-group-average
 ./cluster-testdata.R $testdir/data mcquitty > $testdir/Rweighted-group-average
 ./compare-results.R $testdir/{c,R}weighted-group-average
+
+echo "================================================================================"
+
+echo "centroid"
+$ctool -d $testdir/data -m centroid > $testdir/ccentroid
+./cluster-testdata.R $testdir/data centroid > $testdir/Rcentroid
+./compare-results.R $testdir/{c,R}centroid
+
 
 echo "================================================================================"
 

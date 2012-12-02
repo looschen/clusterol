@@ -68,25 +68,44 @@ namespace clusterol{
   };
 
 
-  // template <typename height_type, typename property_map>
-  // height_type lance_williams_group_average(size_t x, size_t a, size_t b, const clusterol::dissimilarity_matrix<height_type>& dis_mat, property_map n_member){
-  //   size_t member_sum = n_member[a] + n_member[b];
-  //   height_type alpha_i = (height_type) (n_member[a]) / member_sum;
-  //   height_type alpha_j = (height_type) (n_member[b]) / member_sum;
+  template <typename height_type = double>
+  struct lance_williams_group_average{
+    lance_williams_group_average(dendrogram<height_type>& dend)
+      : size(dend.size.begin())
+    {}
+    
+    height_type operator()(size_t x, size_t a, size_t b, const clusterol::dissimilarity_matrix<height_type>& dis_mat){
+      size_t member_sum = size[a] + size[b];
+      height_type alpha_i = height_type(size[a]) / member_sum;
+      height_type alpha_j = height_type(size[b]) / member_sum;
 
-  //   return alpha_i * dis_mat(x, a) + alpha_j * dis_mat(x, b);
-  // }
+      return alpha_i * dis_mat(x, a) + alpha_j * dis_mat(x, b);
+    }
+
+  private:
+    typename std::vector<size_t>::iterator size;
+  };
 
 
-  // template <typename height_type, typename property_map>
-  // height_type lance_williams_centroid(size_t x, size_t a, size_t b, const clusterol::dissimilarity_matrix<height_type>& dis_mat, property_map n_member){
-  //   size_t member_sum = n_member[a] + n_member[b];
-  //   height_type alpha_i = (height_type) (n_member[a]) / member_sum;
-  //   height_type alpha_j = (height_type) (n_member[b]) / member_sum;
-  //   height_type beta = - (height_type) n_member[a] * n_member[b] / (member_sum * member_sum);
+  template <typename height_type>
+  struct lance_williams_centroid{
+    lance_williams_centroid(dendrogram<height_type>& dend)
+      : size(dend.size.begin())
+    {}
+    
+    height_type operator()(size_t x, size_t a, size_t b, const clusterol::dissimilarity_matrix<height_type>& dis_mat){
+      size_t member_sum = size[a] + size[b];
+      height_type alpha_i = (height_type) (size[a]) / member_sum;
+      height_type alpha_j = (height_type) (size[b]) / member_sum;
+      height_type beta = - (height_type) size[a] * size[b] / (member_sum * member_sum);
 
-  //   return alpha_i * dis_mat(x, a) + alpha_j * dis_mat(x, b) + beta * dis_mat(a, b);
-  // }
+      return alpha_i * dis_mat(x, a) + alpha_j * dis_mat(x, b) + beta * dis_mat(a, b);
+    }
+
+  private:
+    typename std::vector<size_t>::iterator size;
+  };
+
 
 }
 

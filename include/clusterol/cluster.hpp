@@ -15,11 +15,11 @@ namespace clusterol{
     // Parse method and cluster data with dissimilarity.
 
     const std::string available_methods[] = {"single-link",  "complete-link",
-					     "ward", // "group-average",
-					     "weighted-group-average", // "centroid",
+					     "ward", "group-average",
+					     "weighted-group-average", "centroid",
 					     "median"// , "energy", "Linf"
     };
-    const std::string* available_methods_end = available_methods + 5;
+    const std::string* available_methods_end = available_methods + 7;
 
     if(std::find(available_methods, available_methods_end, method.c_str()) == available_methods_end){
       throw std::runtime_error("Requested clustering method not available.");
@@ -39,14 +39,20 @@ namespace clusterol{
     }else if(method == "complete-link"){
       lance_williams_generic lw(0.5, 0.5, 0, 0.5);
       matrix_cluster<height_type>(dend, data, data_end, d, lw);
+    }else if(method == "ward"){
+      lance_williams_ward<height_type> lw(dend);
+      matrix_cluster<height_type>(dend, data, data_end, d, lw);
+    }else if(method == "group-average"){
+      lance_williams_group_average<height_type> lw(dend);
+      matrix_cluster<height_type>(dend, data, data_end, d, lw);
     }else if(method == "weighted-group-average"){
       lance_williams_generic lw(0.5, 0.5, 0, 0);
       matrix_cluster<height_type>(dend, data, data_end, d, lw);
+    }else if(method == "centroid"){
+      lance_williams_centroid<height_type> lw(dend);
+      matrix_cluster<height_type>(dend, data, data_end, d, lw);
     }else if(method == "median"){
       lance_williams_generic lw(0.5, 0.5, -0.25, 0);
-      matrix_cluster<height_type>(dend, data, data_end, d, lw);
-    }else if(method == "ward"){
-      lance_williams_ward<height_type> lw(dend);
       matrix_cluster<height_type>(dend, data, data_end, d, lw);
     }
 

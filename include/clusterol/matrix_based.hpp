@@ -19,88 +19,88 @@
 
 namespace clusterol{
 
-  template <typename dis_val, typename tree_t, typename property_map, typename lance_williams>
-  typename boost::graph_traits<tree_t>::vertex_descriptor join(dissimilarity_matrix<dis_val>& dis_mat,
-						tree_t& tree, property_map height,
-						lance_williams lw){
-    // find minimum pair and join
-    // returns new vertex representing the joined pair
-    using namespace std;
-    using namespace boost;
+  // template <typename dis_val, typename tree_t, typename property_map, typename lance_williams>
+  // typename boost::graph_traits<tree_t>::vertex_descriptor join(dissimilarity_matrix<dis_val>& dis_mat,
+  // 						tree_t& tree, property_map height,
+  // 						lance_williams lw){
+  //   // find minimum pair and join
+  //   // returns new vertex representing the joined pair
+  //   using namespace std;
+  //   using namespace boost;
 
-    typedef typename graph_traits<tree_t>::vertex_descriptor vertex;
+  //   typedef typename graph_traits<tree_t>::vertex_descriptor vertex;
   
-    pair<size_t, size_t> min_pair = dis_mat.min_pair();
-    // size_t first = cluster_map[min_pair.first];
-    // size_t second = cluster_map[min_pair.second];
+  //   pair<size_t, size_t> min_pair = dis_mat.min_pair();
+  //   // size_t first = cluster_map[min_pair.first];
+  //   // size_t second = cluster_map[min_pair.second];
     
-    // add to tree
-    vertex parent = add_vertex(tree);
-    // std::cout << dis_mat << "\n" << parent << " -> " << min_pair.first << " " << min_pair.second << "\n\n";
-    add_edge(parent, min_pair.first, tree);
-    add_edge(parent, min_pair.second, tree);
-    height[parent] = dis_mat(min_pair.first, min_pair.second);
+  //   // add to tree
+  //   vertex parent = add_vertex(tree);
+  //   // std::cout << dis_mat << "\n" << parent << " -> " << min_pair.first << " " << min_pair.second << "\n\n";
+  //   add_edge(parent, min_pair.first, tree);
+  //   add_edge(parent, min_pair.second, tree);
+  //   height[parent] = dis_mat(min_pair.first, min_pair.second);
 
-    // update dis_mat(min_pair.first, *)
-    for(typename dissimilarity_matrix<dis_val>::id_iterator i = dis_mat.id_begin(); i != dis_mat.id_end(); ++i){
-      if(*i != min_pair.first && *i != min_pair.second){
-	dis_val new_val = lw(*i, min_pair.first, min_pair.second, dis_mat);
-	dis_mat.update(min_pair.first, *i, new_val);
-      }
-    }
+  //   // update dis_mat(min_pair.first, *)
+  //   for(typename dissimilarity_matrix<dis_val>::id_iterator i = dis_mat.id_begin(); i != dis_mat.id_end(); ++i){
+  //     if(*i != min_pair.first && *i != min_pair.second){
+  // 	dis_val new_val = lw(*i, min_pair.first, min_pair.second, dis_mat);
+  // 	dis_mat.update(min_pair.first, *i, new_val);
+  //     }
+  //   }
 
-    dis_mat.erase(min_pair.second);
-    dis_mat.move(min_pair.first, parent);
+  //   dis_mat.erase(min_pair.second);
+  //   dis_mat.move(min_pair.first, parent);
 
-    // update dis_mat(min_pair.first, *)
-    for(typename dissimilarity_matrix<dis_val>::id_iterator i = dis_mat.id_begin(); i != dis_mat.id_end(); ++i){
-      if(*i != min_pair.first && *i != min_pair.second){
-	dis_val new_val = lw(*i, min_pair.first, min_pair.second, dis_mat);
-	dis_mat.update(min_pair.first, *i, new_val);
-      }
-    }
+  //   // update dis_mat(min_pair.first, *)
+  //   for(typename dissimilarity_matrix<dis_val>::id_iterator i = dis_mat.id_begin(); i != dis_mat.id_end(); ++i){
+  //     if(*i != min_pair.first && *i != min_pair.second){
+  // 	dis_val new_val = lw(*i, min_pair.first, min_pair.second, dis_mat);
+  // 	dis_mat.update(min_pair.first, *i, new_val);
+  //     }
+  //   }
 
-    dis_mat.erase(min_pair.second);
-    dis_mat.move(min_pair.first, parent);
+  //   dis_mat.erase(min_pair.second);
+  //   dis_mat.move(min_pair.first, parent);
 
-    return parent;
-  }
+  //   return parent;
+  // }
 
 
-  template <typename dissimilarity_t, typename random_access_iterator, typename tree_t, typename property_map, typename lance_williams>
-  void matrix_clustering(random_access_iterator data, random_access_iterator data_end,
-			 tree_t& tree, typename boost::graph_traits<tree_t>::vertex_descriptor& root,
-			 property_map height,
-			 dissimilarity_t dissimilarity, lance_williams lw){
-    // Note:
-    // keep order of arguments consistent with possible future algos
+  // template <typename dissimilarity_t, typename random_access_iterator, typename tree_t, typename property_map, typename lance_williams>
+  // void matrix_clustering(random_access_iterator data, random_access_iterator data_end,
+  // 			 tree_t& tree, typename boost::graph_traits<tree_t>::vertex_descriptor& root,
+  // 			 property_map height,
+  // 			 dissimilarity_t dissimilarity, lance_williams lw){
+  //   // Note:
+  //   // keep order of arguments consistent with possible future algos
     
-    // use value type of height map for the dissimilarity matrix
-    typedef typename  boost::property_traits<property_map>::value_type dis_val;
+  //   // use value type of height map for the dissimilarity matrix
+  //   typedef typename  boost::property_traits<property_map>::value_type dis_val;
   
-    size_t n_data_point = distance(data, data_end);
-    //  std::vector<size_t> cluster_map(n_data_point);
+  //   size_t n_data_point = distance(data, data_end);
+  //   //  std::vector<size_t> cluster_map(n_data_point);
   
-    // init tree
-    tree = tree_t(n_data_point);
-    for(size_t i = 0; i != n_data_point; ++i){
-      height[i] = 0;
-      // cluster_map[i] = i;
-    }
+  //   // init tree
+  //   tree = tree_t(n_data_point);
+  //   for(size_t i = 0; i != n_data_point; ++i){
+  //     height[i] = 0;
+  //     // cluster_map[i] = i;
+  //   }
 
-    // init dissimilarity matrix
-    dissimilarity_matrix<dis_val> dis_mat(data, data_end, dissimilarity);
+  //   // init dissimilarity matrix
+  //   dissimilarity_matrix<dis_val> dis_mat(data, data_end, dissimilarity);
 
-    while(dis_mat.valid() > 1){
-      // std::cerr << dis_mat.valid() << "\n";
+  //   while(dis_mat.valid() > 1){
+  //     // std::cerr << dis_mat.valid() << "\n";
 
-      // std::pair<size_t, size_t> min_pair = dis_mat.min_pair();
-      // std::cout << "min_pair: (" << min_pair.first << ", " << min_pair.second << ") = " << dis_mat(min_pair.first, min_pair.second) << "\n";
-      // std::cout << dis_mat << "\n";
+  //     // std::pair<size_t, size_t> min_pair = dis_mat.min_pair();
+  //     // std::cout << "min_pair: (" << min_pair.first << ", " << min_pair.second << ") = " << dis_mat(min_pair.first, min_pair.second) << "\n";
+  //     // std::cout << dis_mat << "\n";
     
-      root = join(dis_mat, tree, height, lw);
-    }
-  }
+  //     root = join(dis_mat, tree, height, lw);
+  //   }
+  // }
 
   /********************************************************************************/
   // clustering algorithm with n_member property map
@@ -226,22 +226,22 @@ namespace clusterol{
   }
 
   
-  template <typename height_type, typename random_access_iterator, typename dissimilarity, typename lance_williams>
-  dendrogram<height_type> matrix_cluster(random_access_iterator data, random_access_iterator data_end, dissimilarity d, lance_williams lw){
-    // Cluster with dissimilarity matrix and return a dendrogram
+  // template <typename height_type, typename random_access_iterator, typename dissimilarity, typename lance_williams>
+  // dendrogram<height_type> matrix_cluster(random_access_iterator data, random_access_iterator data_end, dissimilarity d, lance_williams lw){
+  //   // Cluster with dissimilarity matrix and return a dendrogram
     
-    size_t n_data_point = std::distance(data, data_end);
+  //   size_t n_data_point = std::distance(data, data_end);
 
-    // init dendrogram
-    dendrogram<height_type> dend(n_data_point);
+  //   // init dendrogram
+  //   dendrogram<height_type> dend(n_data_point);
     
-    dissimilarity_matrix<height_type> dis_mat(data, data_end, d);
+  //   dissimilarity_matrix<height_type> dis_mat(data, data_end, d);
 
-    while(dis_mat.valid() > 1)
-      join(dis_mat, dend, lw);
+  //   while(dis_mat.valid() > 1)
+  //     join(dis_mat, dend, lw);
 
-    return dend;
-  }
+  //   return dend;
+  // }
 
   
 }
