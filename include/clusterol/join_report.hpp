@@ -15,16 +15,20 @@ namespace clusterol{
 
   template <typename height_type, typename vertex_descriptor>
   struct join_report_entry{
+    vertex_descriptor vertex;
     std::pair<vertex_descriptor, vertex_descriptor> pair;
     height_type height;
 
     bool operator<(const join_report_entry<height_type, vertex_descriptor>& other) const{
-      // compare by height first, then by pair
-      if(this->height == other.height)
-	return this->pair < other.pair;
-      else
-	return this->height < other.height;
-    }      
+      // // compare by height first, then by pair
+      // if(this->height == other.height)
+      // 	return this->pair < other.pair;
+      // else
+      // 	return this->height < other.height;
+
+      // must compare by vertex for non-ultrametric clustering methods
+      return this->vertex < other.vertex;
+    }
   };
 
 
@@ -47,7 +51,7 @@ namespace clusterol{
 	v_left = boost::target(*oi, tree);
 	++oi;
 	v_right = boost::target(*oi, tree);
-	join_report.push_back((join_report_entry_type) {std::make_pair(v_left, v_right), height[*vi]}); 
+	join_report.push_back((join_report_entry_type) {*vi, std::make_pair(v_left, v_right), height[*vi]}); 
       }
     }
     
