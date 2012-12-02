@@ -1,7 +1,7 @@
 #!/usr/bin/env Rscript
 ## generate simple 2d test data
 
-N = 2000
+N = 250
 d = 5
 range.min = -1e6
 range.max = 1e6

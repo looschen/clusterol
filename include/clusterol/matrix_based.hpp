@@ -215,10 +215,22 @@ namespace clusterol{
   }
 
   template <typename height_type, typename random_access_iterator, typename dissimilarity, typename lance_williams>
+  void matrix_cluster(dendrogram<height_type>& dend, random_access_iterator data, random_access_iterator data_end, dissimilarity d, lance_williams lw){
+    // Cluster with a dissimilarity_matrix. If lance_williams needs to
+    // access property maps of dend, dend can not be generated here.
+    dissimilarity_matrix<height_type> dis_mat(data, data_end, d);
+
+    while(dis_mat.valid() > 1)
+      join(dis_mat, dend, lw);
+
+  }
+
+  
+  template <typename height_type, typename random_access_iterator, typename dissimilarity, typename lance_williams>
   dendrogram<height_type> matrix_cluster(random_access_iterator data, random_access_iterator data_end, dissimilarity d, lance_williams lw){
-    // cluster with a dissimilarity_matrix
+    // Cluster with dissimilarity matrix and return a dendrogram
     
-    size_t n_data_point = distance(data, data_end);
+    size_t n_data_point = std::distance(data, data_end);
 
     // init dendrogram
     dendrogram<height_type> dend(n_data_point);
@@ -230,6 +242,8 @@ namespace clusterol{
 
     return dend;
   }
+
+  
 }
 
 #endif /* _MATRIX_BASED_H_ */

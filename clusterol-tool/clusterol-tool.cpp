@@ -14,6 +14,7 @@
 #include "clusterol/dissimilarity.hpp"
 #include "clusterol/lance_williams.hpp"
 #include "clusterol/matrix_based.hpp"
+#include "clusterol/cluster.hpp"
 #include "input_output.hpp"
 
 
@@ -24,15 +25,15 @@ int main(int argc, char *argv[]){
   namespace po = boost::program_options;
   po::options_description desc("Hierarchical Clustering with clusterol");
 
-    desc.add_options()
-      ("help", "produce help message\n")
-      ("data-point-file,d", po::value(&data_point_filename), "file containing the data points")
-      // currently labels 1..N are used by default
-      // ("label-file,l", po::value(&label_filename), "file containing labels")
-      ("method,m", po::value(&clustering_method)->default_value("single"), "available methods are \"single\"") // and many more
-      ("graph-type", po::value(&graph_type)->default_value("graphviz"), "available types are \"graphviz\"") // and \"graphml\"
-      ("graph-file", po::value(&graph_filename), "write graph in specified format to this file")
-      ("join-file", po::value(&join_filename)->default_value("-"), "put information about mergers/joins here")
+  desc.add_options()
+    ("help", "produce help message\n")
+    ("data-point-file,d", po::value(&data_point_filename), "file containing the data points")
+    // currently labels 1..N are used by default
+    // ("label-file,l", po::value(&label_filename), "file containing labels")
+    ("method,m", po::value(&clustering_method)->default_value("single-link"), "available methods are \"single\"") // and many more
+    ("graph-type", po::value(&graph_type)->default_value("graphviz"), "available types are \"graphviz\"") // and \"graphml\"
+    ("graph-file", po::value(&graph_filename), "write graph in specified format to this file")
+    ("join-file", po::value(&join_filename)->default_value("-"), "put information about mergers/joins here")
     ;
 
   po::variables_map vm;
@@ -49,10 +50,10 @@ int main(int argc, char *argv[]){
     std::cerr << "No data-point-file given\n";
     exit(1);
   }
-  if(clustering_method != "single"){
-    std::cerr << "Unsupported clustering method: " << clustering_method << "\n";
-    exit(1);
-  }
+  // if(clustering_method != "single"){
+  //   std::cerr << "Unsupported clustering method: " << clustering_method << "\n";
+  //   exit(1);
+  // }
   if(graph_type != "graphviz"){
     std::cerr << "Unsupported graph-type: " << graph_type << "\n";
     exit(1);
@@ -95,28 +96,32 @@ int main(int argc, char *argv[]){
   // }
 
 
-  // cluster, preliminary testing implementation
-  clusterol::lance_williams_generic lw(0.5, 0.5, 0, -0.5); // single link 
-  // lance_williams lw(0.5, 0.5, 0, 0.5);	// complete link
-  // lance_williams lw(0.5, 0.5, 0, 0);	// weighted group average
-  // lance_williams lw(0.5, 0.5, -0.25, 0);// Median (weighted centroid
+  // // cluster, preliminary testing implementation
+  // clusterol::lance_williams_generic lw(0.5, 0.5, 0, -0.5); // single link 
+  // // lance_williams lw(0.5, 0.5, 0, 0.5);	// complete link
+  // // lance_williams lw(0.5, 0.5, 0, 0);	// weighted group average
+  // // lance_williams lw(0.5, 0.5, -0.25, 0);// Median (weighted centroid
 
-  // old style:
-  // boost::adjacency_list<> dendrogram;
-  // typedef boost::graph_traits< boost::adjacency_list<> >::vertex_descriptor vertex_descriptor;
-  // vertex_descriptor root;
-  // std::vector<double> height(2*data_set.size() - 1);
-  // clusterol::matrix_clustering
-  //   (data_set.begin(), data_set.end(),
-  //    dendrogram, root, &height[0],
-  //    clusterol::dissimilarity_be<clusterol::euclidean_distance>(),
-  //    lw);
+  // // old style:
+  // // boost::adjacency_list<> dendrogram;
+  // // typedef boost::graph_traits< boost::adjacency_list<> >::vertex_descriptor vertex_descriptor;
+  // // vertex_descriptor root;
+  // // std::vector<double> height(2*data_set.size() - 1);
+  // // clusterol::matrix_clustering
+  // //   (data_set.begin(), data_set.end(),
+  // //    dendrogram, root, &height[0],
+  // //    clusterol::dissimilarity_be<clusterol::euclidean_distance>(),
+  // //    lw);
 
-  // new style:
-  clusterol::dendrogram<> dend = clusterol::matrix_cluster<double>(data_set.begin(), data_set.end(),
-						clusterol::dissimilarity_be<clusterol::euclidean_distance>(),
-						lw);
+  // // new style:
+  // clusterol::dendrogram<> dend = clusterol::matrix_cluster<double>(data_set.begin(), data_set.end(),
+  // 						clusterol::dissimilarity_be<clusterol::euclidean_distance>(),
+  // 						lw);
 
+  // simplified
+  clusterol::dendrogram<> dend = clusterol::cluster<double>(data_set.begin(), data_set.end(), clustering_method,
+							    clusterol::dissimilarity_be<clusterol::euclidean_distance>());
+  
   if(vm.count("graph-file"))
     boost::write_graphviz(graph_out, dend.tree, boost::make_label_writer(&dend.height[0]));
 
