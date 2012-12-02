@@ -1,5 +1,5 @@
-#ifndef _LANCE_WILLIAMS_H_
-#define _LANCE_WILLIAMS_H_
+#ifndef _CLUSTEROL_LANCE_WILLIAMS_H_
+#define _CLUSTEROL_LANCE_WILLIAMS_H_
 
 #include "dissimilarity_matrix.hpp"
 #include "dendrogram.hpp"
@@ -109,4 +109,4 @@ namespace clusterol{
 
 }
 
-#endif /* _LANCE_WILLIAMS_H_ */
+#endif /* _CLUSTEROL_LANCE_WILLIAMS_H_ */

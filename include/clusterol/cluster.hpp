@@ -1,5 +1,5 @@
-#ifndef _CLUSTER_H_
-#define _CLUSTER_H_
+#ifndef _CLUSTEROL_CLUSTER_H_
+#define _CLUSTEROL_CLUSTER_H_
 
 #include <string>
 #include <stdexcept>
@@ -66,4 +66,4 @@ namespace clusterol{
 }
     
 
-#endif /* _CLUSTER_H_ */
+#endif /* _CLUSTEROL_CLUSTER_H_ */

@@ -1,5 +1,5 @@
-#ifndef _MINIMUM_SPANNING_TREE_H_
-#define _MINIMUM_SPANNING_TREE_H_
+#ifndef _CLUSTEROL_MINIMUM_SPANNING_TREE_H_
+#define _CLUSTEROL_MINIMUM_SPANNING_TREE_H_
 
 #include <vector>
 #include <list>
@@ -201,7 +201,7 @@ namespace clusterol{
     mst_type mst;
 
     // get mst
-    minimum_spanning_tree(data, data_end, mst, get(edge_weight, mst), d);
+    clusterol::minimum_spanning_tree(data, data_end, mst, get(edge_weight, mst), d);
     // write_graphviz(cout, mst, make_label_writer(get(vertex_index, mst)), make_label_writer(get(&mst_edge_bundle<height_type>::weight, mst)));
 
     // get dendrogram
@@ -214,4 +214,4 @@ namespace clusterol{
 }
 
 
-#endif /* _MINIMUM_SPANNING_TREE_H_ */
+#endif /* _CLUSTEROL_MINIMUM_SPANNING_TREE_H_ */

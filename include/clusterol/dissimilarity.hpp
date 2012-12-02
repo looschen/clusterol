@@ -1,5 +1,5 @@
-#ifndef _DISSIMILARITY_H_
-#define _DISSIMILARITY_H_
+#ifndef _CLUSTEROL_DISSIMILARITY_H_
+#define _CLUSTEROL_DISSIMILARITY_H_
 
 #include <cmath>
 #include <algorithm>
@@ -119,4 +119,4 @@ namespace clusterol{
 
 
 
-#endif /* _DISSIMILARITY_H_ */
+#endif /* _CLUSTEROL_DISSIMILARITY_H_ */

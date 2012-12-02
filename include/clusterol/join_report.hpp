@@ -1,5 +1,5 @@
-#ifndef _JOIN_REPORT_H_
-#define _JOIN_REPORT_H_
+#ifndef _CLUSTEROL_JOIN_REPORT_H_
+#define _CLUSTEROL_JOIN_REPORT_H_
 
 #include <vector>
 #include <boost/version.hpp>
@@ -71,4 +71,4 @@ namespace clusterol{
   
 }
 
-#endif /* _JOIN_REPORT_H_ */
+#endif /* _CLUSTEROL_JOIN_REPORT_H_ */

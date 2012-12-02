@@ -1,8 +1,9 @@
-#ifndef _DENDROGRAM_H_
-#define _DENDROGRAM_H_
+#ifndef _CLUSTEROL_DENDROGRAM_H_
+#define _CLUSTEROL_DENDROGRAM_H_
 
 #include <vector>
 #include <boost/graph/adjacency_list.hpp>
+#include "join_report.hpp"
 
 // Dendrogram struct
 
@@ -35,7 +36,7 @@ namespace clusterol{
 
 }
     
-#endif /* _DENDROGRAM_H_ */
+#endif /* _CLUSTEROL_DENDROGRAM_H_ */
 
 
 

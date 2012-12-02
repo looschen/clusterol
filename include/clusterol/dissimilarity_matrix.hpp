@@ -1,5 +1,5 @@
-#ifndef _DISSIMILARITY_MATRIX_H_
-#define _DISSIMILARITY_MATRIX_H_
+#ifndef _CLUSTEROL_DISSIMILARITY_MATRIX_H_
+#define _CLUSTEROL_DISSIMILARITY_MATRIX_H_
 
 #include <vector>
 #include <map>
@@ -332,4 +332,4 @@ namespace clusterol{
   }
 
 }
-#endif /* _DISSIMILARITY_MATRIX_H_ */
+#endif /* _CLUSTEROL_DISSIMILARITY_MATRIX_H_ */
