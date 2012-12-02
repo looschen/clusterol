@@ -20,13 +20,8 @@ namespace clusterol{
     height_type height;
 
     bool operator<(const join_report_entry<height_type, vertex_descriptor>& other) const{
-      // // compare by height first, then by pair
-      // if(this->height == other.height)
-      // 	return this->pair < other.pair;
-      // else
-      // 	return this->height < other.height;
-
-      // must compare by vertex for non-ultrametric clustering methods
+      // Compare by vertex
+      // This works for non-ultrametric clustering methods.
       return this->vertex < other.vertex;
     }
   };
@@ -57,14 +52,6 @@ namespace clusterol{
     
     return join_report;
   }
-
-
-  // template <typename height_type, typename vertex_descriptor>
-  // void sort_join_report(std::vector< join_report_entry<height_type, vertex_descriptor> >& join_report){
-  //   // sort by height, then by pair
-  //   // this is trivial due to operator< in join_report_entry
-  //   std::sort(join_report.begin(), join_report.end());
-  // }
 
 
   template <typename vertex_descriptor>

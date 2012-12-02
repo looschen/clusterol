@@ -50,10 +50,6 @@ int main(int argc, char *argv[]){
     std::cerr << "No data-point-file given\n";
     exit(1);
   }
-  // if(clustering_method != "single"){
-  //   std::cerr << "Unsupported clustering method: " << clustering_method << "\n";
-  //   exit(1);
-  // }
   if(graph_type != "graphviz"){
     std::cerr << "Unsupported graph-type: " << graph_type << "\n";
     exit(1);
@@ -88,37 +84,7 @@ int main(int argc, char *argv[]){
     exit(1);
   }
 
-  // // test output
-  // for(std::vector<data_point>::iterator i = data_set.begin(); i != data_set.end(); ++i){
-  //   for(data_point::iterator j = i->begin(); j != i->end(); ++j)
-  //     std::cout << *j << " ";
-  //   std::cout << "\n";
-  // }
-
-
-  // // cluster, preliminary testing implementation
-  // clusterol::lance_williams_generic lw(0.5, 0.5, 0, -0.5); // single link 
-  // // lance_williams lw(0.5, 0.5, 0, 0.5);	// complete link
-  // // lance_williams lw(0.5, 0.5, 0, 0);	// weighted group average
-  // // lance_williams lw(0.5, 0.5, -0.25, 0);// Median (weighted centroid
-
-  // // old style:
-  // // boost::adjacency_list<> dendrogram;
-  // // typedef boost::graph_traits< boost::adjacency_list<> >::vertex_descriptor vertex_descriptor;
-  // // vertex_descriptor root;
-  // // std::vector<double> height(2*data_set.size() - 1);
-  // // clusterol::matrix_clustering
-  // //   (data_set.begin(), data_set.end(),
-  // //    dendrogram, root, &height[0],
-  // //    clusterol::dissimilarity_be<clusterol::euclidean_distance>(),
-  // //    lw);
-
-  // // new style:
-  // clusterol::dendrogram<> dend = clusterol::matrix_cluster<double>(data_set.begin(), data_set.end(),
-  // 						clusterol::dissimilarity_be<clusterol::euclidean_distance>(),
-  // 						lw);
-
-  // simplified
+  // clustering, clusterol::cluster checks if clustering_method is available
   clusterol::dendrogram<> dend = clusterol::cluster<double>(data_set.begin(), data_set.end(), clustering_method,
 							    clusterol::dissimilarity_be<clusterol::euclidean_distance>());
   

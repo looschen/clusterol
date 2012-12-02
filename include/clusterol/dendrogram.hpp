@@ -14,8 +14,8 @@ namespace clusterol{
     typedef boost::graph_traits<tree_type>::vertex_descriptor vertex_descriptor;
     typedef join_report_entry<height_type, vertex_descriptor> join_report_entry_type;
 
-    // convenient constructor
-    dendrogram(size_t n_data_point)
+    // convenient constructor, which allows default construction
+    dendrogram(size_t n_data_point = 0)
       : tree(tree_type(n_data_point)),
 	root(0),
 	size(2 * n_data_point - 1),
