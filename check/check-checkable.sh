@@ -16,6 +16,12 @@ $ctool -d $testdir/data -m single-link > $testdir/csingle-link
 
 echo "================================================================================"
 
+echo "matrix-single-link"
+$ctool -d $testdir/data -m matrix-single-link > $testdir/cmatrix-single-link
+./compare-results.R $testdir/cmatrix-single-link $testdir/Rsingle-link
+
+echo "================================================================================"
+
 echo "complete-link"
 $ctool -d $testdir/data -m complete-link > $testdir/ccomplete-link
 ./cluster-testdata.R $testdir/data complete > $testdir/Rcomplete-link
