@@ -39,8 +39,14 @@ int main(int argc, char *argv[]){
     ;
 
   po::variables_map vm;
-  po::store(po::parse_command_line(argc, argv, desc), vm);
-  po::notify(vm);
+  try{
+    po::store(po::parse_command_line(argc, argv, desc), vm);
+    po::notify(vm);
+  }catch(std::exception& e){
+    std::cerr << "An error occured while parsing the options:\n"
+	      << e.what() << "\n";
+    exit(1);
+  }
 
   if(vm.count("help")){
     std::cout << desc << "\n";
@@ -66,7 +72,7 @@ int main(int argc, char *argv[]){
     if(!join_filename.empty())		// always open, suppress with ""
       open_outfile(join_filename, join_out);
   }catch(std::exception& e){
-    std::cerr << "An Error occured during output: \n"
+    std::cerr << "An error occured during output: \n"
 	      << e.what() << "\n";
     exit(1);
   }
@@ -81,7 +87,7 @@ int main(int argc, char *argv[]){
     line = read_file(data_point_filename);
     data_set = lines_to_data_points(line, separator);
   }catch(std::exception& e){
-    std::cerr << "An Error occured during input: \n"
+    std::cerr << "An error occured during input: \n"
 	      << e.what() << "\n";
     exit(1);
   }
