@@ -1,6 +1,7 @@
 #include <fstream>
 #include <iostream>
 #include <stdexcept>
+#include <algorithm>
 #include "input_output.hpp"
 
 
@@ -37,16 +38,20 @@ std::vector<std::string> read_file(const std::string& filename){
 }
 
 
-std::vector< std::vector<double> > lines_to_data_points(const std::vector<std::string>& line){
-  // convert vector of lines to vector of data points,
-  // which are vector<double>
+std::vector< std::vector<double> > lines_to_data_points(const std::vector<std::string>& line, char separator){
+  // convert vector of lines to vector of data points, which are
+  // vector<double>.
+  // There is simple support for separators, which
+  // works by replacing the separator with ' '.
 
   if(line.size() == 0)
     return std::vector< std::vector<double> >();
-  
+
   size_t data_point_size = 0;
   double tmp;
-  std::stringstream ss(line[0]);
+  std::string l = line[0];
+  std::replace(l.begin(), l.end(), separator, ' ');
+  std::stringstream ss(l);
   while(ss >> tmp)
     ++data_point_size;
   if(ss.fail() && !ss.eof())
@@ -58,7 +63,15 @@ std::vector< std::vector<double> > lines_to_data_points(const std::vector<std::s
   std::vector< std::vector<double> > data_set(line.size(), std::vector<double>(data_point_size));
 
   for(size_t i = 0; i != line.size(); ++i){
-    std::stringstream ss(line[i]);
+    std::stringstream ss;
+    if(separator == ' '){
+      ss.str(line[i]);
+    }else{
+      std::string l = line[i];
+      std::replace(l.begin(), l.end(), separator, ' ');
+      ss.str(l);
+    }
+      
     for(size_t j = 0; j != data_point_size; ++j){
       if(!(ss >> data_set[i][j]))      
 	throw(std::runtime_error(std::string("Could not read data point on line ") + x_to_string(i + 1)));

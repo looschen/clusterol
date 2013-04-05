@@ -9,7 +9,7 @@
 
 void open_outfile(const std::string& filename, std::ofstream& ofs);
 std::vector<std::string> read_file(const std::string& filename);
-std::vector< std::vector<double> > lines_to_data_points(const std::vector<std::string>& line);
+std::vector< std::vector<double> > lines_to_data_points(const std::vector<std::string>& line, char separator=' ');
 
 template<typename T>
 std::string x_to_string(const T& x){

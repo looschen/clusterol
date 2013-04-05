@@ -21,13 +21,15 @@
 int main(int argc, char *argv[]){
 
   std::string data_point_filename, label_filename, clustering_method, graph_type, graph_filename, join_filename;
-    
+  char separator;
+  
   namespace po = boost::program_options;
   po::options_description desc("Hierarchical Clustering with clusterol");
 
   desc.add_options()
     ("help", "produce help message\n")
     ("data-point-file,d", po::value(&data_point_filename), "file containing the data points")
+    ("separator", po::value(&separator)->default_value(' '), "separator of values in the data-point file")
     // currently labels 1..N are used by default
     // ("label-file,l", po::value(&label_filename), "file containing labels")
     ("method,m", po::value(&clustering_method)->default_value("single-link"), "available methods are \"single\"") // and many more
@@ -77,7 +79,7 @@ int main(int argc, char *argv[]){
 
   try{
     line = read_file(data_point_filename);
-    data_set = lines_to_data_points(line);
+    data_set = lines_to_data_points(line, separator);
   }catch(std::exception& e){
     std::cerr << "An Error occured during input: \n"
 	      << e.what() << "\n";
