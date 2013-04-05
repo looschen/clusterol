@@ -8,7 +8,7 @@
 // helper functions for reading and writing files
 
 void open_outfile(const std::string& filename, std::ofstream& ofs);
-std::vector<std::string> read_file(const std::string& filename);
+std::vector<std::string> read_file(const std::string& filename, size_t skip=0);
 std::vector< std::vector<double> > lines_to_data_points(const std::vector<std::string>& line, char separator=' ');
 
 template<typename T>

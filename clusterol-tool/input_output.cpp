@@ -17,9 +17,10 @@ void open_outfile(const std::string& filename, std::ofstream& ofs){
 }
 
 
-std::vector<std::string> read_file(const std::string& filename){
+std::vector<std::string> read_file(const std::string& filename, size_t skip){
   // read lines from filename into a vector of strings,
   // ignore lines commented with "#"
+  // skip first skip lines to ignore headers
   
   std::ifstream file(filename.c_str());
   if(!file.good())
@@ -27,6 +28,8 @@ std::vector<std::string> read_file(const std::string& filename){
 
   std::vector<std::string> line;
   std::string l;
+  for(size_t i = 0; i != skip; ++i)
+    std::getline(file, l);
   while(std::getline(file, l)){
     if(l[0] == '#')
       continue;			// comments
@@ -77,7 +80,9 @@ std::vector< std::vector<double> > lines_to_data_points(const std::vector<std::s
 	throw(std::runtime_error(std::string("Could not read data point on line ") + x_to_string(i + 1)));
     }
     if(!ss.eof())
-      throw(std::runtime_error(std::string("Data point on line ") + x_to_string(i + 1) + std::string(" is too long")));
+      throw(std::runtime_error(std::string("Data point on line ") + x_to_string(i + 1) +
+			       std::string(" is too long:\n") + ss.str() +
+			       std::string("\nexpected: ") +  x_to_string(data_point_size) + std::string("\n")));
   }
 
   return data_set;
