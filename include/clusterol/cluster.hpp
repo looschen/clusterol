@@ -1,10 +1,11 @@
 #ifndef _CLUSTEROL_CLUSTER_H_
 #define _CLUSTEROL_CLUSTER_H_
 
-#include <string>
-#include <stdexcept>
 #include "matrix_based.hpp"
 #include "minimum_spanning_tree.hpp"
+#include <string>
+#include <stdexcept>
+
 
 // Easily use any clustering method provided by clusterol.
 

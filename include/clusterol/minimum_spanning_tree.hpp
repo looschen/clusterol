@@ -1,9 +1,7 @@
 #ifndef _CLUSTEROL_MINIMUM_SPANNING_TREE_H_
 #define _CLUSTEROL_MINIMUM_SPANNING_TREE_H_
 
-#include <vector>
-#include <list>
-#include <limits>
+#include "dendrogram.hpp"
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/graph_traits.hpp>
 #include <boost/graph/depth_first_search.hpp>
@@ -15,8 +13,12 @@
 #else
 #include <boost/property_map.hpp>
 #endif
+#include <vector>
+#include <list>
+#include <limits>
 
-#include "dendrogram.hpp"
+
+// Implementation of MST and related single-link algorithm
 
 namespace clusterol{
   template<typename vertex, typename weight_type>

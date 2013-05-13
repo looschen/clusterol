@@ -1,8 +1,8 @@
+#include "input_output.hpp"
 #include <fstream>
 #include <iostream>
 #include <stdexcept>
 #include <algorithm>
-#include "input_output.hpp"
 
 
 void open_outfile(const std::string& filename, std::ofstream& ofs){

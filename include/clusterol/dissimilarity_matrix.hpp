@@ -9,6 +9,7 @@
 #include <iterator>
 #include <stdexcept>
 
+
 // A  dissimilarity matrix based on various STL-containers
 
 namespace clusterol{

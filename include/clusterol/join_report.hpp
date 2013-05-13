@@ -1,13 +1,15 @@
 #ifndef _CLUSTEROL_JOIN_REPORT_H_
 #define _CLUSTEROL_JOIN_REPORT_H_
 
-#include <vector>
+#include <boost/graph/adjacency_list.hpp>
 #include <boost/version.hpp>
 #if BOOST_VERSION >= 104100
 #include <boost/property_map/property_map.hpp>
 #else
 #include <boost/property_map.hpp>
 #endif
+#include <vector>
+
 
 // Report joined pairs and heights in a simple vector.
 

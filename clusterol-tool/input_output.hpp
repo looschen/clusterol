@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 
+
 // helper functions for reading and writing files
 
 void open_outfile(const std::string& filename, std::ofstream& ofs);

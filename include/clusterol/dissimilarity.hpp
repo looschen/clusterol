@@ -4,6 +4,7 @@
 #include <cmath>
 #include <algorithm>
 
+
 namespace clusterol{
 
   template <typename dissimilarity_t>

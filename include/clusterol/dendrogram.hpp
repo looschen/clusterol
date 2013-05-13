@@ -1,9 +1,10 @@
 #ifndef _CLUSTEROL_DENDROGRAM_H_
 #define _CLUSTEROL_DENDROGRAM_H_
 
-#include <vector>
-#include <boost/graph/adjacency_list.hpp>
 #include "join_report.hpp"
+#include <boost/graph/adjacency_list.hpp>
+#include <vector>
+
 
 // Dendrogram struct
 

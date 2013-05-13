@@ -1,6 +1,9 @@
 #ifndef _CLUSTEROL_MATRIX_BASED_H_
 #define _CLUSTEROL_MATRIX_BASED_H_
 
+#include "dendrogram.hpp"
+#include "lance_williams.hpp"
+#include "dissimilarity_matrix.hpp"
 #include <boost/graph/graph_traits.hpp>
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/version.hpp>
@@ -11,9 +14,6 @@
 #endif
 #include <iostream>
 
-#include "dendrogram.hpp"
-#include "lance_williams.hpp"
-#include "dissimilarity_matrix.hpp"
 
 // Matrix-based clustering algorithms
 

@@ -1,21 +1,19 @@
-#include <iostream>
-#include <stdexcept>
+#include "input_output.hpp"
+#include "clusterol/join_report.hpp"
+#include "clusterol/dissimilarity.hpp"
+#include "clusterol/lance_williams.hpp"
+#include "clusterol/matrix_based.hpp"
+#include "clusterol/cluster.hpp"
 #include <boost/program_options.hpp>
 #include <boost/graph/graphviz.hpp>
-#include <boost/graph/adjacency_list.hpp>
 #include <boost/version.hpp>
 #if BOOST_VERSION >= 104100
 #include <boost/property_map/property_map.hpp>
 #else
 #include <boost/property_map.hpp>
 #endif
-
-#include "clusterol/join_report.hpp"
-#include "clusterol/dissimilarity.hpp"
-#include "clusterol/lance_williams.hpp"
-#include "clusterol/matrix_based.hpp"
-#include "clusterol/cluster.hpp"
-#include "input_output.hpp"
+#include <iostream>
+#include <stdexcept>
 
 
 int main(int argc, char *argv[]){
